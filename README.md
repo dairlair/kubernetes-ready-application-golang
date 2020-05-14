@@ -1,2 +1,1 @@
-# kubernetes-ready-application-golang
-Kubernetes-ready Application in Golang
+# Kubernetes-ready Application in Golang
