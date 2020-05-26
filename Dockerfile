@@ -1,10 +1,9 @@
-# These variables are used for image building purposes only.
+FROM alpine
 ARG APP
-
-FROM scratch
-
+ENV APP=$APP
 ENV PORT 80
+
 EXPOSE $PORT
 
-COPY ${APP} /
-CMD ["/${APP}"]
+COPY ${APP} /app
+CMD ["/app"]

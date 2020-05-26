@@ -10,13 +10,15 @@ import (
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 	"net/http"
+	"os"
 )
 
 type hello struct {
 }
 
 func (h hello) Run() (stop func(), wait func() error, err error) {
-	server := &http.Server{Addr: ":80", Handler: router()}
+	port := os.Getenv("PORT")
+	server := &http.Server{Addr: ":" + port, Handler: router()}
 	return func() {
 			// We got a signal to stop our server
 			log.Warnf("%s is shutting down...", version.ApplicationName)
@@ -51,7 +53,7 @@ func main() {
 	helloComponent := hello{}
 
 	components := map[string]core.ComponentInterface{
-		"kubernetes":   kubernetes.NewHTTPProbe(helloComponent.IsReady, "81"),
+		"k8s-probes":   kubernetes.NewHTTPProbe(helloComponent.IsReady, "81"),
 		"signals-trap": signal.NewTrap(),
 		"hello-world":  helloComponent,
 	}
