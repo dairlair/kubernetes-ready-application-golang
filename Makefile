@@ -22,6 +22,9 @@ clean: guard-APP guard-APP_NAME
 build: clean
 	CGO_ENABLED=0 GOOS=${GOOS} GOARCH=${GOARCH} go build -ldflags '-s -w -X "${BOILERPLATE_PROJECT}/pkg/version.ApplicationName=${APP_NAME}" -X "${BOILERPLATE_PROJECT}/pkg/version.Release=${RELEASE}" -X "${BOILERPLATE_PROJECT}/pkg/version.Commit=${COMMIT}" -X "${BOILERPLATE_PROJECT}/pkg/version.BuildTime=${BUILD_TIME}"' -o ${APP}
 
+image: build
+	docker build -t $(APP):$(RELEASE) --build-arg APP=${APP} .
+
 .PHONY: test
 test:
 	go test -v ./...
