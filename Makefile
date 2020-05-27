@@ -8,6 +8,11 @@ BUILD_TIME?=$(shell date -u '+%Y-%m-%dT%H:%M:%SZ')
 GOOS?=linux
 GOARCH?=amd64
 
+# Docker settings
+DOCKER_REGISTRY?=docker.io
+DOCKER_IMAGE?=${AUTHOR}/${APP}
+DOCKER_REGISTRY_IMAGE=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
+
 # Application runtime variables
 PORT?=80
 
@@ -31,8 +36,11 @@ build: clean
 image: GOOS=linux
 image: build
 	cp $(BOILERPLATE_ROOT)/Dockerfile ./Dockerfile
-	docker build --build-arg APP=${APP} -t $(APP):$(RELEASE) .
+	docker build --build-arg APP=${APP} -t $(DOCKER_IMAGE):$(RELEASE) .
 	rm -f ./Dockerfile
+
+publish: image
+	docker push $(DOCKER_REGISTRY_IMAGE):$(RELEASE)
 
 run: image
 	docker stop $(APP):$(RELEASE) || true && docker rm $(APP):$(RELEASE) || true
