@@ -42,6 +42,7 @@ func (p HTTPProbe) Run() (stop func(), wait func() error, err error) {
 				log.Infof("probes: stopped successfully")
 			}
 		}, func() error {
+			log.Info("probes: listen port " + p.port)
 			return server.ListenAndServe()
 		},
 		nil

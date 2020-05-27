@@ -51,9 +51,10 @@ func welcome(w http.ResponseWriter, _ *http.Request) {
 
 func main() {
 	helloComponent := hello{}
+	probesPort := os.Getenv("PROBES_PORT")
 
 	components := map[string]core.ComponentInterface{
-		"k8s-probes":   kubernetes.NewHTTPProbe(helloComponent.IsReady, "81"),
+		"k8s-probes":   kubernetes.NewHTTPProbe(helloComponent.IsReady, probesPort),
 		"signals-trap": signal.NewTrap(),
 		"hello-world":  helloComponent,
 	}

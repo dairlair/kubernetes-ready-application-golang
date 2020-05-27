@@ -15,6 +15,7 @@ DOCKER_REGISTRY_IMAGE=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
 
 # Application runtime variables
 PORT?=80
+PROBES_PORT?=81
 
 # This entry point provides functionality to check that required variable is set.
 guard-%:
@@ -43,8 +44,8 @@ publish: image
 	docker push $(DOCKER_REGISTRY_IMAGE):$(RELEASE)
 
 run: image
-	docker stop $(APP):$(RELEASE) || true && docker rm $(APP):$(RELEASE) || true
-	docker run --name ${APP} -p ${PORT}:${PORT} --rm -e "PORT=${PORT}" $(APP):$(RELEASE)
+	docker stop $(DOCKER_IMAGE):$(RELEASE) || true && docker rm $(DOCKER_IMAGE):$(RELEASE) || true
+	docker run --name ${APP} -p ${PORT}:${PORT} -p ${PROBES_PORT}:${PROBES_PORT} --rm -e "PORT=${PORT}" -e "PROBES_PORT=${PROBES_PORT}" $(DOCKER_IMAGE):$(RELEASE)
 
 .PHONY: test
 test:
