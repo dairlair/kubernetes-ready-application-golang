@@ -17,7 +17,7 @@ func (g Greeter) Run() (stop func(), wait func() error, err error) {
 		}, func() error {
 			log.Infof("Starting service %s", version.ApplicationName)
 			log.Infof("commit: %s, build time: %s, release: %s", version.Commit, version.BuildTime, version.Release)
-			return nil
+			select{ }
 		},
 		nil
 }
