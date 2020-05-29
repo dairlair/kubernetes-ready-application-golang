@@ -1,7 +1,7 @@
 package greeting
 
 import (
-	"github.com/dairlair/kubernetes-ready-application-golang/pkg/version"
+	"github.com/stepsisters/kgb/pkg/version"
 	log "github.com/sirupsen/logrus"
 )
 

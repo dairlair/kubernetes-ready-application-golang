@@ -1,4 +1,4 @@
-module github.com/dairlair/kubernetes-ready-application-golang
+module github.com/stepsisters/kgb
 
 go 1.14
 
