@@ -1,4 +1,4 @@
-BOILERPLATE_PROJECT=github.com/dairlair/kubernetes-ready-application-golang
+BOILERPLATE_PROJECT=github.com/stepsisters/kgb
 BOILERPLATE_ROOT?=vendor/$BOILERPLATE_PROJECT
 
 RELEASE?=0.0.1

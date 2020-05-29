@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/dairlair/kubernetes-ready-application-golang/mocks/pkg/core"
+	"github.com/stepsisters/kgb/mocks/pkg/core"
 	"testing"
 )
 
