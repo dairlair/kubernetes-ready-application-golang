@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 	"github.com/stepsisters/kgb/pkg/component/kubernetes"
 	"github.com/stepsisters/kgb/pkg/component/signal"
 	"github.com/stepsisters/kgb/pkg/core"
 	"github.com/stepsisters/kgb/pkg/version"
-	"github.com/gorilla/mux"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"
 )
@@ -46,7 +46,9 @@ func router() *mux.Router {
 }
 
 func welcome(w http.ResponseWriter, _ *http.Request) {
-	fmt.Fprint(w, "Hello! Your request was processed.")
+	if _, err := fmt.Fprint(w, "Hello! Your request was processed."); err != nil {
+		log.Errorf("rest: something went wrong. %s", err)
+	}
 }
 
 func main() {

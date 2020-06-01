@@ -6,6 +6,9 @@ metadata:
     app: rest
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: rest
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -18,18 +21,23 @@ spec:
     spec:
       containers:
         - name: rest
-          image: docker.io/dairlair/rest:0.0.1
+          image: docker.io/dairlair/rest:0.0.2
+          env:
+          - name: PORT
+            value: "8000"
+          - name: PROBES_PORT
+            value: "8001"
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 80
+              port: 8001
           readinessProbe:
             httpGet:
               path: /readyz
-              port: 80
+              port: 8001
           resources:
             limits:
               cpu: 10m

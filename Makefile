@@ -34,15 +34,18 @@ build: clean
 
 # Just a target-specific variable, we always build a Linux binary to create the docker image.
 # You can run `make image` on macOS or Windows without GOOS override.
+.PHONY: image
 image: GOOS=linux
 image: build
 	cp $(BOILERPLATE_ROOT)/Dockerfile ./Dockerfile
 	docker build --build-arg APP=${APP} -t $(DOCKER_IMAGE):$(RELEASE) .
 	rm -f ./Dockerfile
 
+.PHONY: publish
 publish: image
 	docker push $(DOCKER_REGISTRY_IMAGE):$(RELEASE)
 
+.PHONY: run
 run: image
 	docker stop $(DOCKER_IMAGE):$(RELEASE) || true && docker rm $(DOCKER_IMAGE):$(RELEASE) || true
 	docker run --name ${APP} -p ${PORT}:${PORT} -p ${PROBES_PORT}:${PROBES_PORT} --rm -e "PORT=${PORT}" -e "PROBES_PORT=${PROBES_PORT}" $(DOCKER_IMAGE):$(RELEASE)
