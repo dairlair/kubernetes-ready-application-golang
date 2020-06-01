@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rest
+  name: {{ .Release.Name }}
   labels:
-    app: rest
+    app: {{ .Release.Name }}
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: rest
+      app: {{ .Release.Name }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -17,16 +17,16 @@ spec:
   template:
     metadata:
       labels:
-        app: rest
+        app: {{ .Release.Name }}
     spec:
       containers:
-        - name: rest
-          image: docker.io/dairlair/rest:0.0.2
+        - name: {{ .Release.Name }}
+          image: {{ $.Values.Image }}
           env:
-          - name: PORT
-            value: "8000"
-          - name: PROBES_PORT
-            value: "8001"
+            - name: PORT
+              value: "8000"
+            - name: PROBES_PORT
+              value: "8001"
           imagePullPolicy: Always
           ports:
             - containerPort: 8000

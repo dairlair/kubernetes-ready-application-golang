@@ -17,6 +17,9 @@ DOCKER_REGISTRY_IMAGE=${DOCKER_REGISTRY}/${DOCKER_IMAGE}
 PORT?=80
 PROBES_PORT?=81
 
+# Help variables
+HELM_CHART_PATH=./helm
+
 # This entry point provides functionality to check that required variable is set.
 guard-%:
 	@ if [ "${${*}}" = "" ]; then \
@@ -58,3 +61,13 @@ test:
 mocks:
 	@echo " > Generate mocks..."
 	mockery -all -keeptree -dir pkg -output ./mocks/pkg
+
+.PHONY: helm
+helm: guard-HELM_CHART_PATH publish
+	@echo " > Run helm install --dry-run --debug..."
+	helm install --debug --dry-run ${APP} ${HELM_CHART_PATH} --set Image="$(DOCKER_REGISTRY_IMAGE):$(RELEASE)"
+
+.PHONY: deploy
+deploy: guard-HELM_CHART_PATH publish
+	@echo " > Run helm install"
+	helm upgrade --install ${APP} ${HELM_CHART_PATH} --set Image="$(DOCKER_REGISTRY_IMAGE):$(RELEASE)"
