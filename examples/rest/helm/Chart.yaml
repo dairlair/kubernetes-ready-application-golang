@@ -1,0 +1,7 @@
+apiVersion: v2
+name: chart
+description: A Helm chart for rest application deployment to Kubernetes
+
+type: application
+version: 0.1.0
+appVersion: 0.1.0

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ $.Values.Image }}
+          env:
+            - name: PORT
+              value: "8000"
+            - name: PROBES_PORT
+              value: "8001"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8001
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8001
+          resources:
+            limits:
+              cpu: 10m
+              memory: 30Mi
+            requests:
+              cpu: 10m
+              memory: 30Mi
+      terminationGracePeriodSeconds: 5
