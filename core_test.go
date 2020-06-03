@@ -1,4 +1,4 @@
-package core
+package kgb
 
 import (
 	"github.com/stepsisters/kgb/mocks/pkg/core"
