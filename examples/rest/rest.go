@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
+	"github.com/stepsisters/kgb"
 	"github.com/stepsisters/kgb/pkg/component/kubernetes"
 	"github.com/stepsisters/kgb/pkg/component/signal"
-	"github.com/stepsisters/kgb/pkg/core"
 	"github.com/stepsisters/kgb/pkg/version"
 	"net/http"
 	"os"
@@ -55,10 +55,10 @@ func main() {
 	helloComponent := hello{}
 	probesPort := os.Getenv("PROBES_PORT")
 
-	components := map[string]core.ComponentInterface{
+	components := map[string]kgb.ComponentInterface{
 		"k8s-probes":   kubernetes.NewHTTPProbe(helloComponent.IsReady, probesPort),
 		"signals-trap": signal.NewTrap(),
 		"hello-world":  helloComponent,
 	}
-	core.Run(components)
+	kgb.Run(components)
 }
