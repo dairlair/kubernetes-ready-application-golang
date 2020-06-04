@@ -45,9 +45,7 @@ build: clean
 .PHONY: image
 image: GOOS=linux
 image: build
-	cp $(BOILERPLATE_ROOT)/Dockerfile ./Dockerfile
 	docker build --build-arg APP=${APP} -t $(DOCKER_IMAGE):$(RELEASE) .
-	rm -f ./Dockerfile
 
 .PHONY: publish
 publish: image
