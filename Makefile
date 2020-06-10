@@ -23,7 +23,7 @@ PORT?=80
 PROBES_PORT?=81
 
 # Help variables
-HELM_CHART_PATH=./helm
+HELM_CHART_PATH?=./helm
 
 # This entry point provides functionality to check that required variable is set.
 guard-%:
